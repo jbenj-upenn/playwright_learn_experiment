@@ -67,6 +67,8 @@ public class App {
                 
                 /* 2.  assertThat(page.locator("text=Installation")).isVisible(); */
 
+                /* 3. */ assertThat(page).hasTitle(Pattern.compile("Installation | Let's Fail"));
+
                 System.out.println("Heading assertion passed: 'Installation' heading is visible...");
             }catch(AssertionError e){
                 System.out.println("Heading assertion failed: " + e.getMessage());
