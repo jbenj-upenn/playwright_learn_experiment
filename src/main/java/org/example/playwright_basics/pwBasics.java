@@ -4,17 +4,22 @@ import java.util.Scanner;
 
 /* must import */
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.BrowserType.LaunchOptions;
 
 public class pwBasics {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         int again = 0;
-        Browser browser;
-        BrowserType browserType;
-        Page page;
+        
 
         do {
+            Browser browser;
+            BrowserType browserType;
+            Page page;
+            boolean isChromeOrEdge = false;
+            LaunchOptions lo = new LaunchOptions();
+
             System.out.println("Enter '1' to use Playwright.class method, where you must select the browser type & headless state; click '2' to use Naveen Automation method: ");
             int userChoice = sc.nextInt();
             sc.nextLine();
@@ -32,7 +37,23 @@ public class pwBasics {
                     }
 
                     switch(userBrowser){
-                        case 1: System.out.println("Chromium..."); browserType = playwright.chromium(); break;
+                        case 1: System.out.println("Chromium..."); 
+                                System.out.println("Enter 1 if you want to use 'Edge' or 'Chrome' instead of 'Chromium'; enter 2 if not...");
+                                int specBrowser = sc.nextInt(); sc.nextLine();
+                                if(specBrowser == 1){
+                                    isChromeOrEdge = true;
+                                    lo = new LaunchOptions();
+                                    System.out.println("Enter 1 for 'Chrome', enter 2 for 'Edge...");
+                                    specBrowser = sc.nextInt(); sc.nextLine();
+                                    if(specBrowser == 1){
+                                        System.out.println("Chrome...");
+                                        lo.setChannel("chrome");
+                                    }else{
+                                        System.out.println("Edge...");
+                                        lo.setChannel("msedge");
+                                    }
+                                }
+                                    browserType = playwright.chromium(); break;
                         case 2: System.out.println("Firefox..."); browserType = playwright.firefox(); break;
                         case 3: System.out.println("Safari..."); browserType = playwright.webkit(); break;
                         default: browserType = playwright.chromium();
@@ -48,7 +69,13 @@ public class pwBasics {
 
                     if(headless == 2){
                         System.out.println("Showing browser in 'head' mode...");
-                        browser = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(1000));
+                        if(isChromeOrEdge){
+                            lo.setHeadless(false).setSlowMo(1000);
+                            browser = browserType.launch(lo);
+                        }else{
+                            browser = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(1000));
+                        }
+                        
                     }else{
                         System.out.println("Proceeding with headless mode...");
                         browser = browserType.launch();
