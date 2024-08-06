@@ -13,4 +13,4 @@ Basic test run from command line: `mvn exec:java -D exec.mainClass="org.example.
 After cloning the repo, open your terminal and navigate to the project's root directory and run either command above.
 
 ## Demo
-![Running from the command line](images/pwBasics_Demo%20(1).mp4)
+![Running from the command line](images/pwBasics_Demo1-ezgif.com-optimize.gif)
